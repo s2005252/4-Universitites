@@ -1,3 +1,8 @@
+import pandas as pd
+
+from nltk.corpus import stopwords
+STOPWORDS = set(stopwords.words('english'))
+
 # translate from html to  txt
 import os
 path = '/Users/abzalyessengazy/Desktop/DME/webkb/course/cornell'
