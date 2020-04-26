@@ -1,0 +1,65 @@
+# translate from html to  txt
+import os
+path = '/Users/abzalyessengazy/Desktop/DME/webkb/course/cornell'
+files = os.listdir(path)
+for i, file in enumerate(files):
+    NewName = os.path.join(path, file+".txt")
+    OldName = os.path.join(path, file)
+    os.rename(OldName, NewName)
+# preprocessing
+import re
+from nltk.stem import PorterStemmer
+porter = PorterStemmer()
+punctuation = "[+-\.\!\/_,>»`[\\]$%^*(+\"\')]+|[+——()?【】“”！，。？、~@#￥%……&*（）|;:1234567890]+"
+
+import glob
+dir = '/Users/abzalyessengazy/Desktop/DME/webkb'
+samples = glob.glob(dir+'/*/*/*.txt')
+# samples.sort(key=lambda x: int(x.split('.')[0]))
+x=1
+for i in range(len(samples)):
+    path = samples[i]
+
+    with open(path,'r',encoding = 'unicode_escape') as f :
+        result= f.read()
+        dr = re.compile(r'<[^>]+>',re.S)
+        dd = dr.sub('',result)
+
+        dd = re.sub(punctuation, ' ', dd)
+        dd = dd.lower()
+        words = dd.split()
+        with open('/Users/abzalyessengazy/Desktop/DME/ST.txt', 'r') as y:
+            stopwords = y.read()
+            outstr = '' 
+            for word in words:
+                if word not in stopwords:
+                    #Normalisation
+                    word = porter.stem(word)
+                    outstr += word + " "
+            #print(outstr)
+            #print(x)
+            #print('\n')
+            x = x + 1
+            with open("/Users/abzalyessengazy/Desktop/DME/parser.txt", 'a') as target:
+                target.write('"' + str(outstr) + '"')
+
+df=pd.DataFrame()
+
+from sklearn.feature_extraction.text import CountVectorizer
+with open("/Users/abzalyessengazy/Desktop/DME/parser.txt",'r') as f:
+    corpus = f.read()
+    # corpus = [
+    #     "John likes to watch movies, Mary likes movies too",
+    #     "John also likes to watch football games",
+    # ]
+    # corpus = "["+str(result)+"]"
+    # print(corpus)
+
+    corpus = [corpus]
+    #print(corpus)
+    vectorizer = CountVectorizer()
+    X = vectorizer.fit_transform(corpus)
+    #print(vectorizer.get_feature_names())
+    print(X.toarray())
+# with open("/Users/lihuiyang/Desktop/test2.txt", 'a') as target:
+#     target.write(str(vectorizer.get_feature_names()) + "\n"+str(X.toarray()))
