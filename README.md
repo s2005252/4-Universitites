@@ -2,4 +2,7 @@
 Full data mining cycle on 4 unis dataset
 
 
-This was a part of university of edinburgh project carried out by team lead by Abzal Yessengazy
+This was a part of university of edinburgh project carried out by team lead by Abzal Yessengazy. 
+
+
+The Final Project Report is also included in PDF format. 
